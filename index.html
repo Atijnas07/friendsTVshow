@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Home</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="shortcut icon" href="logo.jpeg" type="image/jpeg">
+  <link href="https://fonts.googleapis.com/css2?family=Merriweather&family=Open+Sans&display=swap" rel="stylesheet">
+  <style>
+    /* Reset */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Open Sans', sans-serif;
+      background-color: #f4f4f4;
+      color: #333;
+      line-height: 1.6;
+      animation: fadeInBody 1.5s ease-in;
+    }
+
+    @keyframes fadeInBody {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
+    /* Navbar */
+    .navbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 10px 30px;
+      background-color: #fff;
+      border-bottom: 1px solid #ddd;
+    }
+
+    .logo {
+      width: 120px;
+      height: auto;
+    }
+
+    .nav-links {
+      list-style: none;
+      display: flex;
+      gap: 20px;
+      align-items: center;
+      justify-content: center;
+      font-size: 16px;
+      font-weight: bold;
+    }
+
+    .nav-links li {
+      display: flex;
+      align-items: center;
+    }
+
+    .nav-links li:not(:last-child)::after {
+      content: "|";
+      margin-left: 20px;
+      color: #999;
+    }
+
+    .nav-links a {
+      text-decoration: none;
+      color: #333;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      transition: all 0.3s ease;
+      position: relative;
+    }
+
+    .nav-links a::after {
+      content: "";
+      display: block;
+      width: 0;
+      height: 2px;
+      background: #f39c12;
+      transition: width .3s;
+      position: absolute;
+      bottom: -5px;
+      left: 0;
+    }
+
+    .nav-links a:hover::after {
+      width: 100%;
+    }
+
+    /* Main Section */
+    .main-section {
+      background-color: #fff;
+      display: flex;
+      justify-content: space-between;
+      padding: 50px 30px;
+      margin: 20px;
+      border: 1px solid #ddd;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+      flex-wrap: wrap;
+      animation: fadeInBody 2s ease;
+    }
+
+    .left-side {
+      width: 40%;
+    }
+
+    .left-side h1 {
+      font-family: 'Merriweather', serif;
+      font-size: 48px;
+      margin-bottom: 20px;
+    }
+
+    .left-side p {
+      font-size: 18px;
+      margin-bottom: 10px;
+    }
+
+    /* Carousel */
+    .carousel {
+      width: 55%;
+      height: 550px; /* Increased height */
+      position: relative;
+      overflow: hidden;
+      background-color: #fff;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    }
+
+    .slides {
+      display: flex;
+      height: 100%;
+      transition: transform 0.5s ease-in-out;
+    }
+
+    .slides img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      flex-shrink: 0;
+    }
+
+    .prev, .next {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      background-color: rgba(0, 0, 0, 0.5);
+      border: none;
+      font-size: 30px;
+      color: #fff;
+      cursor: pointer;
+      padding: 10px;
+      z-index: 2;
+      border-radius: 50%;
+    }
+
+    .prev:hover, .next:hover {
+      background-color: #f39c12;
+    }
+
+    .prev {
+      left: 10px;
+    }
+
+    .next {
+      right: 10px;
+    }
+
+    .carousel-info {
+      text-align: center;
+      font-family: 'Open Sans', sans-serif;
+      font-size: 16px;
+      margin-top: 10px;
+      padding: 10px 0;
+    }
+
+    /* Scrolling Text */
+    .scrolling-text {
+      background-color: #333;
+      color: #fff;
+      overflow: hidden;
+      white-space: nowrap;
+      width: 100%;
+      padding: 10px 0;
+      margin-top: 20px;
+      position: relative;
+    }
+
+    .text-track {
+      display: inline-block;
+      padding-left: 100%;
+      animation: scroll-left 120s linear infinite;
+      font-family: 'Open Sans', sans-serif;
+      font-size: 16px;
+    }
+
+    @keyframes scroll-left {
+      0% { transform: translateX(0); }
+      100% { transform: translateX(-100%); }
+    }
+
+    /* Footer */
+    .footer {
+      background-color: #333;
+      color: #fff;
+      text-align: center;
+      padding: 20px;
+      font-size: 16px;
+      margin-top: 40px;
+    }
+
+    /* Mobile */
+    @media (max-width: 768px) {
+      .main-section {
+        flex-direction: column;
+        align-items: center;
+      }
+
+      .left-side, .carousel {
+        width: 100%;
+      }
+
+      .carousel {
+        height: 350px; /* Increased from 250px */
+      }
+
+      .nav-links {
+        flex-direction: column;
+        gap: 10px;
+      }
+
+      .nav-links li:not(:last-child)::after {
+        display: none;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+<!-- Navbar -->
+<nav class="navbar">
+  <img src="lgo.png" alt="Friends Logo" class="logo">
+  <ul class="nav-links">
+    <li><a href="#">Home</a></li>
+    <li><a href="about.html">About</a></li>
+    <li><a href="characters.html">Characters</a></li>
+    <li><a href="quiz.html">Quiz</a></li>
+  </ul>
+</nav>
+
+<!-- Main Section -->
+<section class="main-section">
+  <div class="left-side">
+    <h1>Friends - The TV Show</h1>
+	<p><strong>Genre:</strong> Sitcom, Romantic comedy </p>
+    <p><strong>Number of Seasons:</strong> 10</p>
+    <p><strong>Total Episodes:</strong> 236</p>
+	<p><strong>Starring:</strong> Jennifer Aniston, Courteney Cox, Lisa Kudrow, Matt LeBlanc, Matthew Perry and David Schwimmer</p>
+    <p><strong>Created By:</strong> David Crane, Marta Kauffman and Kevin S. Bright</p>
+    <p><strong>First Aired:</strong> September 22, 1994, on NBC</p>
+    <p><strong>Audience Reaction:</strong> "Friends" became a cultural phenomenon, praised for its humor, chemistry among the cast, and relatable storylines.</p>
+  </div>
+
+  <div class="carousel">
+    <div class="slides">
+      <img src="f1.jpeg" alt="Friends Cast at Central Perk">
+      <img src="f2.jpeg" alt="Friends Fun Moments">
+      <img src="f3.jpeg" alt="Friends Apartment Scene">
+	  <img src="f4.jpeg" alt="Friends Coffee House">
+      <img src="f5.jpeg" alt="Friends Coffee House">
+	  <img src="f6.jpeg" alt="Friends Coffee House">
+	  <img src="f7.jpeg" alt="Friends Coffee House">
+	  <img src="f8.jpeg" alt="Friends Coffee House">
+	  <img src="f9.jpeg" alt="Friends Coffee House">
+	  <img src="f10.jpeg" alt="Friends Coffee House">
+	  
+    </div>
+    <button class="prev" onclick="prevSlide()" aria-label="Previous slide">❮</button>
+    <button class="next" onclick="nextSlide()" aria-label="Next slide">❯</button>
+
+    <div class="carousel-info">
+      <p><strong>1994</strong> | Jennifer Aniston, Courteney Cox, Lisa Kudrow, Matt LeBlanc, Matthew Perry, David Schwimmer</p>
+    </div>
+  </div>
+</section>
+
+<!-- Scrolling Dialogues -->
+<div class="scrolling-text">
+  <div class="text-track">
+    "How you doin'?" ⭐ "We were on a break!" ⭐ "Pivot! Pivot! Pivot!" ⭐ "Oh.My.God!" ⭐ "Smelly Cat, Smelly Cat!" ⭐ "Could I *be* wearing any more clothes?" ⭐ "I got off the plane." ⭐ "They don't know that we know they know we know!" ⭐ "Joey doesn't share food!" ⭐ "Seven! Seven! Seven!" ⭐ "Paper! Snow! A ghost!" ⭐ "You're my lobster." ⭐ "Welcome to the real world. It sucks." ⭐ "I KNOW!" ⭐ "I don't even have a pla!" ⭐ "No uterus, no opinion!" ⭐ "You threw away my sandwich!" ⭐ "You fell asleep?" ⭐ "It’s a moo point." ⭐ "My eyes! My eyes!" ⭐ "I'm hopeless and awkward and desperate for love." ⭐ "Unagi!" ⭐ "The Routine!" ⭐ "The Holiday Armadillo!" ⭐ "See? He's her lobster!" ⭐ "Well, maybe I don’t need your money. Wait, wait, I said maybe!" ⭐ "I wish I could, but I don’t want to" ⭐ "Okay, you have to stop the Q-Tip when there’s resistance" ⭐ "Oh, come on, Will, just take off your shirt and tell us." ⭐ "You can’t just give up. Is that what a dinosaur would do" ⭐ "I 'm not great at the advice. Can I interest you in a sarcastic comment?" ⭐ "It's like all of my life everyone has always told me you're a shoe, you're a shoe, you're a shoe, you're a shoe. And then today, I just stopped and I said, what if I don't want to be a shoe? What if I want to be a purse, you know, or a hat?" ⭐ "I can't believe my parents are actually pressuring me to find one of you people" ⭐ "Gum would be perfection"
+  </div>
+</div>
+
+<!-- Footer -->
+<div class="footer">
+  <p>Friends Tribute Page - Created with ❤️ for the legendary TV show!</p>
+</div>
+
+<!-- Carousel Script -->
+<script>
+  let currentSlide = 0;
+  const slides = document.querySelector('.slides');
+  const totalSlides = document.querySelectorAll('.slides img').length;
+
+  function showSlide(index) {
+    if (index >= totalSlides) currentSlide = 0;
+    else if (index < 0) currentSlide = totalSlides - 1;
+    else currentSlide = index;
+
+    slides.style.transform = `translateX(${-currentSlide * 100}%)`;
+  }
+
+  function nextSlide() {
+    showSlide(currentSlide + 1);
+  }
+
+  function prevSlide() {
+    showSlide(currentSlide - 1);
+  }
+
+  window.onload = () => showSlide(0);
+
+  setInterval(() => {
+    nextSlide();
+  }, 7000);
+</script>
+
+</body>
+</html>
