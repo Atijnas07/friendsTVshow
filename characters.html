@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Friends TV Show</title>
+  <link rel="shortcut icon" href="images/logo.jpeg" type="image/jpeg">
+  <style>
+    body {
+      margin: 0;
+      background-color: #05081c;
+      overflow: hidden;
+      font-family: Arial, sans-serif;
+    }
+
+  .navbar {
+    position: fixed;
+    top: 0;
+    right: 0;
+    width: auto;
+    background-color: transparent;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    padding: 20px 40px;
+    z-index: 1000;
+	}
+
+	.nav-links {
+    display: flex;
+    align-items: center;
+    gap: 30px;
+	}
+
+	.nav-links a {
+    color: #f4f4f4;
+    text-decoration: none;
+    font-weight: bold;
+    font-size: 1.2rem; /* Made text a little bigger */
+    transition: color 0.3s;
+	}
+	
+	.nav-links a:hover {
+    color: #ffcc00;
+	}
+
+
+    .container {
+      position: relative;
+      width: 100vw;
+      height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .carousel {
+      position: absolute;
+      width: 800px;
+      height: 800px;
+      border-radius: 50%;
+      animation: rotate 30s linear infinite;
+    }
+
+    .carousel.paused {
+      animation-play-state: paused;
+    }
+
+    .character {
+      position: absolute;
+      width: 60px;
+      height: 60px;
+      border-radius: 50%;
+      cursor: pointer;
+      transition: transform 0.3s;
+    }
+
+    .character img {
+      width: 100%;
+      height: 100%;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 2px solid white;
+    }
+
+    .center-display {
+      position: absolute;
+      text-align: center;
+      color: white;
+      max-width: 300px;
+      z-index: 2;
+      background-color: rgba(0, 0, 0, 0.6);
+      padding: 15px;
+      border-radius: 12px;
+    }
+
+    .center-display img {
+      width: 200px;
+      height: auto;
+      margin-bottom: 10px;
+      border-radius: 10px;
+    }
+
+    @keyframes rotate {
+      from { transform: rotate(0deg); }
+      to { transform: rotate(360deg); }
+    }
+  </style>
+</head>
+<body>
+
+  <nav class="navbar">
+    <div class="nav-links">
+      <a href="index.html">Home</a>
+      <a href="about.html">About</a>
+      <a href="#">Character</a>
+      <a href="quiz.html">Quiz</a>
+    </div>
+  </nav>
+
+  <div class="container">
+    <div class="carousel" id="carousel"></div>
+    <div class="center-display" id="centerDisplay">
+      <img src="" id="centerImage" alt="" />
+      <h2 id="centerName"></h2>
+      <p id="centerDesc"></p>
+      <em id="centerQuote"></em>
+    </div>
+  </div>
+
+  <script>
+    const characters = [
+      { name: "Rachel Green", image: "rachel.jpeg", desc: "Fashion executive, stylish and witty.", quote: "No uterus, no opinion." },
+      { name: "Ross Geller", image: "ross.jpeg", desc: "Paleontologist, loves dinosaurs.", quote: "We were on a break!" },
+      { name: "Monica Geller", image: "monica.jpeg", desc: "Chef, competitive and organized.", quote: "Welcome to the real world. It sucks. You’re gonna love it!" },
+      { name: "Chandler Bing", image: "chandler.jpeg", desc: "Sarcastic and funny data analyst.", quote: "Could I BE any more...?" },
+      { name: "Joey Tribbiani", image: "joey.jpeg", desc: "Actor, food lover.", quote: "How you doin'?" },
+      { name: "Phoebe Buffay", image: "phoebe.jpeg", desc: "Musician, eccentric and spiritual.", quote: "Oh, I wish I could, but I don't want to" },
+      { name: "Janice Hosenstein", image: "janice.jpeg", desc: "Chandler's unforgettable, loud, quirky ex-girlfriend", quote: "Oh. My. God!" },
+      { name: "Dr. Barry Farber", image: "Barry.jpeg", desc: "Ex of Rachel.", quote: "I can't believe I'm doing this." },
+      { name: "Mike Hannigan", image: "mike.jpeg", desc: "Phoebe’s husband, pianist.", quote: "I actually play the piano." },
+      { name: "Richard Burke", image: "Richard.jpeg", desc: "Monica's ex, mustache man.", quote: "I grew the mustache back." },
+      { name: "Emily Waltham", image: "Emily.jpeg", desc: "Ross’s ex-wife.", quote: "You said Rachel's name at the altar." },
+      { name: "Carol Willick", image: "Carol.jpeg", desc: "Ross’s lesbian wife.", quote: "Susan and I are getting married." },
+      { name: "Mr. Heckles", image: "heckles.jpeg", desc: "The grumpy downstairs neighbor.", quote: "You owe me a cat." },
+      { name: "Sandra Green", image: "rachel-mom.jpeg", desc: "Rachel’s mom.", quote: "This is just a phase." },
+      { name: "Leonard Green", image: "rachel-dad.jpeg", desc: "Rachel’s strict father.", quote: "You call this a job?" },
+      { name: "Judy Geller", image: "monica-mom.jpeg", desc: "Monica’s critical mother.", quote: "Monica, why can't you be more like Ross?" },
+      { name: "Jack Geller", image: "monica-dad.jpeg", desc: "Monica’s fun-loving dad.", quote: "I got her the Porsche!" },
+      { name: "Ursula Buffay", image: "ursula.jpeg", desc: "Phoebe's twin sister.", quote: "Wait, who's Phoebe?" },
+      { name: "Mindy Hunter", image: "mindy.jpeg", desc: "Rachel's ex-best friend, married Barry.", quote: "I hope you're happy, Rachel." },
+      { name: "Emma Geller-Green", image: "emma.jpeg", desc: "The daughter of Ross and Rachel.", quote: "I like big butts and I cannot lie" },
+      { name: "Susan Bunch", image: "susan.jpeg", desc: "Carol’s wife, sharp-witted and bold.", quote: "I’m not a part of your village people." },
+      { name: "Estelle Leonard", image: "estelle Leonard.jpeg", desc: "Joey’s dramatic agent.", quote: "Joey, you owe me headshots!" },
+      { name: "Ben Geller", image: "ben.jpeg", desc: "Ross’s son with Carol.", quote: "Daddy!" },
+      { name: "Frances Buffay", image: "frances.jpeg", desc: "Phoebe’s grandma who raised her.", quote: "Phoebe, pass me the smokes." },
+      { name: "Gloria Tribbiani", image: "joey-mom.jpeg", desc: "Joey’s passionate Italian mom.", quote: "Joey, eat something!" },
+      { name: "Joseph Tribbiani Sr.", image: "joey-dad.jpeg", desc: "Joey’s dad, kind but flawed.", quote: "It’s just a phase, Joey." },
+      { name: "Nora Bing", image: "Nora.jpeg", desc: "Chandler’s flamboyant novelist mom.", quote: "I’m very proud of my son... who is a gay transvestite." }
+    ];
+
+    const carousel = document.getElementById("carousel");
+    const centerImage = document.getElementById("centerImage");
+    const centerName = document.getElementById("centerName");
+    const centerDesc = document.getElementById("centerDesc");
+    const centerQuote = document.getElementById("centerQuote");
+
+    function renderCharacters() {
+      const radius = 350;
+      const centerX = 400;
+      const centerY = 400;
+      const total = characters.length;
+
+      characters.forEach((char, index) => {
+        const angle = (2 * Math.PI * index) / total;
+        const x = centerX + radius * Math.cos(angle) - 30;
+        const y = centerY + radius * Math.sin(angle) - 30;
+
+        const div = document.createElement("div");
+        div.className = "character";
+        div.style.left = `${x}px`;
+        div.style.top = `${y}px`;
+        div.innerHTML = `<img src="${char.image}" alt="${char.name}" onerror="this.src='Images/default.png'" />`;
+
+        div.addEventListener("mouseenter", () => {
+          carousel.classList.add("paused");
+          centerImage.src = char.image;
+          centerName.textContent = char.name;
+          centerDesc.textContent = char.desc;
+          centerQuote.textContent = `"${char.quote}"`;
+        });
+
+        div.addEventListener("mouseleave", () => {
+          carousel.classList.remove("paused");
+        });
+
+        carousel.appendChild(div);
+      });
+    }
+
+    renderCharacters();
+  </script>
+</body>
+</html>

@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Friends Quiz Central</title>
+  <link rel="shortcut icon" href="logo.jpeg" type="image/jpeg">
+
+  <!-- TailwindCSS -->
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+
+  <style>
+    html, body {
+      margin: 0;
+      padding: 0;
+      width: 100%;
+      height: 100%;
+      overflow-x: hidden;
+      font-family: 'Comic Sans MS', cursive, sans-serif;
+      background: linear-gradient(to bottom right, #1a0d2e, #2e1a47, #3b2357);
+      position: relative;
+      animation: backgroundAnimation 5s ease-in-out infinite alternate;
+      display: flex;
+      flex-direction: column;
+    }
+
+    @keyframes backgroundAnimation {
+      0% { background: linear-gradient(to bottom right, #1a0d2e, #2e1a47, #3b2357); }
+      50% { background: linear-gradient(to bottom right, #3b2357, #1a0d2e, #2e1a47); }
+      100% { background: linear-gradient(to bottom right, #2e1a47, #3b2357, #1a0d2e); }
+    }
+
+    @keyframes rollUp {
+      0% {
+        opacity: 0;
+        transform: translateY(100px) scale(0.8);
+      }
+      100% {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+      }
+    }
+
+    .container {
+      position: relative;
+      width: 100%;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding-top: 100px;
+    }
+
+    .centerpiece {
+      position: relative;
+      z-index: 5;
+      margin-bottom: 40px;
+      animation: rollUp 2s ease-out;
+    }
+
+    h1 {
+      font-size: 4rem;
+      color: #ffe680;
+      text-shadow: 2px 2px #000;
+      text-align: center;
+      animation: textGlow 1.5s ease-in-out infinite alternate;
+    }
+
+    @keyframes textGlow {
+      0% { text-shadow: 0 0 5px #ffe680, 0 0 10px #ffe680, 0 0 15px #ffe680; }
+      100% { text-shadow: 0 0 20px #ffe680, 0 0 30px #ffe680, 0 0 40px #ffe680; }
+    }
+
+    .cards {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 20px;
+      z-index: 5;
+      position: relative;
+      width: 90%;
+      max-width: 1200px;
+      margin-top: 40px;
+      animation: rollUp 2.5s ease-out;
+    }
+
+    .card {
+      background: white;
+      border-radius: 1rem;
+      padding: 1.5rem;
+      text-align: center;
+      font-weight: bold;
+      transition: 0.3s;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+      position: relative;
+      overflow: hidden;
+      font-size: 2rem;
+    }
+
+    .card:hover {
+      transform: translateY(-8px) scale(1.05);
+      background: linear-gradient(to right, #ffe680, #ffffff);
+      box-shadow: 0 10px 30px rgba(255, 255, 255, 0.7);
+    }
+
+    .card h3 {
+      margin-top: 10px;
+      font-size: 1.5rem;
+      color: #333;
+      transition: color 0.3s;
+    }
+
+    .card p {
+      font-size: 1rem;
+      color: #666;
+    }
+
+    .card:hover h3 {
+      color: #e02a47;
+    }
+
+    .card:hover p {
+      color: #444;
+    }
+
+    .btn {
+      display: inline-block;
+      background-color: #e02a47;
+      color: white;
+      padding: 10px 20px;
+      border-radius: 30px;
+      text-decoration: none;
+      font-size: 1.2rem;
+      margin-top: 20px;
+      transition: background-color 0.3s;
+    }
+
+    .btn:hover {
+      background-color: #ff6f61;
+    }
+
+    .floating-coffee {
+      position: absolute;
+      top: 20%;
+      left: 50%;
+      transform: translateX(-50%);
+      font-size: 3rem;
+      animation: floatCoffee 5s ease-in-out infinite alternate;
+    }
+
+    @keyframes floatCoffee {
+      0% { transform: translateX(-50%) translateY(0); }
+      50% { transform: translateX(-50%) translateY(-30px); }
+      100% { transform: translateX(-50%) translateY(0); }
+    }
+
+    .floating-heart {
+      position: absolute;
+      bottom: 10%;
+      right: 10%;
+      font-size: 2rem;
+      animation: floatHeart 6s ease-in-out infinite alternate;
+    }
+
+    @keyframes floatHeart {
+      0% { transform: translateY(0); }
+      50% { transform: translateY(-20px); }
+      100% { transform: translateY(0); }
+    }
+
+    footer {
+      margin-top: auto;
+      text-align: center;
+      padding: 10px 0;
+      color: #ccc;
+    }
+
+    /* LOADING SCREEN */
+    #loadingScreen {
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background-color: rgba(0,0,0,0.9);
+      color: white;
+      font-size: 3rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 9999;
+      flex-direction: row;
+      letter-spacing: 1rem;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.5s;
+    }
+
+    #loadingScreen.show {
+      opacity: 1;
+      pointer-events: all;
+    }
+
+    .dot {
+	  animation: colorBlink 1.5s infinite;
+    }
+
+    @keyframes colorBlink{
+      0% { color: red; }
+	  16%  { color: skyblue; }
+	  33%  { color: yellow; }
+      50% { color: red; }
+	  66%  { color: skyblue; }
+	  83%  { color: yellow; }
+	  100% { color: red; }
+    } 
+  </style>
+</head>
+
+<body>
+
+<div class="container">
+  <div class="centerpiece">
+    <h1>Pick Your Challenge!</h1>
+  </div>
+
+  <div class="floating-coffee">☕</div>
+  <div class="floating-heart">💖</div>
+
+  <div class="cards">
+    <div class="card">🧑‍🦱 <h3>Ross Geller</h3><p>Dinosaurs, divorces, and leather pants!</p></div>
+    <div class="card">👩‍🦰 <h3>Rachel Green</h3><p>Fashion, coffee shops, and iconic hairstyles.</p></div>
+    <div class="card">🧹 <h3>Monica Geller</h3><p>Cleaning, cooking, and competitive spirit!</p></div>
+    <div class="card">🎭 <h3>Chandler Bing</h3><p>Sarcasm, jokes, and commitment issues!</p></div>
+    <div class="card">🍕 <h3>Joey Tribbiani</h3><p>Pizza, acting gigs, and "How you doin'?"</p></div>
+    <div class="card">🎸 <h3>Phoebe Buffay</h3><p>Smelly cat, crazy songs, and free spirit!</p></div>
+    <div class="card">🏠 <h3>Central Perk</h3><p>Moments from the favorite coffeehouse!</p></div>
+    <div class="card">💘 <h3>Relationships</h3><p>Love triangles, marriages, and babies!</p></div>
+    <div class="card">🎬 <h3>Iconic Episodes</h3><p>From "The One Where..." to "The Last One".</p></div>
+    <div class="card">💬 <h3>Quotes & Catchphrases</h3><p>Could I BE wearing any more clothes?</p></div>
+    <div class="card">👕 <h3>Fashion Moments</h3><p>Rachel's style, Joey's weird clothes & more!</p></div>
+    <div class="card">🧩 <h3>Crosswords</h3><p>Solve FRIENDS-themed crosswords and puzzles!</p></div>
+  </div>
+</div>
+
+<footer>
+  &copy; 2025 Friends Quiz Central. I'll be there for you 🎶
+</footer>
+
+<audio id="clickSound" src="https://cdn.pixabay.com/audio/2022/03/15/audio_731e6d3942.mp3"></audio>
+
+<!-- Loading screen -->
+<div id="loadingScreen">
+  <span>F<span class="dot">.</span>R<span class="dot">.</span>I<span class="dot">.</span>E<span class="dot">.</span>N<span class="dot">.</span>D<span class="dot">.</span>S</span>
+</div>
+
+<script>
+  const cards = document.querySelectorAll('.card');
+  const clickSound = document.getElementById('clickSound');
+  const loadingScreen = document.getElementById('loadingScreen');
+
+  const pageMap = {
+    "Ross Geller": "ross.html",
+    "Rachel Green": "rachel.html",
+    "Monica Geller": "monica.html",
+    "Chandler Bing": "chandler.html",
+    "Joey Tribbiani": "joey.html",
+    "Phoebe Buffay": "phoebe.html",
+    "Central Perk": "centralperk.html",
+    "Relationships": "relationships.html",
+    "Iconic Episodes": "iconicepisodes.html",
+    "Quotes & Catchphrases": "quotes.html",
+    "Fashion Moments": "fashion.html",
+    "Crosswords": "crosswords.html"
+  };
+
+  cards.forEach(card => {
+    card.addEventListener('click', () => {
+      clickSound.currentTime = 0;
+      clickSound.play();
+
+      const titleElement = card.querySelector('h3');
+      const title = titleElement ? titleElement.textContent.trim() : "";
+
+      const targetPage = pageMap[title];
+      if (targetPage) {
+        // Show loading animation
+        loadingScreen.classList.add('show');
+
+        // After 2.5 seconds, navigate
+        setTimeout(() => {
+          window.location.href = targetPage;
+        }, 2500);
+      }
+    });
+  });
+</script>
+
+</body>
+</html>
