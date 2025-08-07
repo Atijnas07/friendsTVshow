@@ -1,0 +1,376 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Joey Quiz</title>
+  <link rel="shortcut icon" href="logo.jpeg" type="image/jpeg">
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      height: 100vh;
+      background: url("download (21).jpeg") no-repeat center center fixed;
+      background-size: cover;
+      background-color: #1a001f;
+      overflow: hidden;
+      font-family: 'Poppins', sans-serif;
+      position: relative;
+    }
+
+    .overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(26, 0, 31, 0.5);
+      pointer-events: none;
+      z-index: 1;
+    }
+
+    .dotted-background {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 2;
+    }
+
+    .dot {
+      position: absolute;
+      width: 8px;
+      height: 8px;
+      background: rgba(255, 255, 255, 0.15);
+      border-radius: 50%;
+      animation: floatDot 10s infinite ease-in-out alternate, fadeDot 6s infinite ease-in-out alternate;
+    }
+
+    @keyframes floatDot {
+      0% { transform: translate(0, 0) scale(1); }
+      50% { transform: translate(30px, -30px) scale(1.2); }
+      100% { transform: translate(-30px, 30px) scale(1); }
+    }
+
+    @keyframes fadeDot {
+      0% { opacity: 0.3; }
+      50% { opacity: 0.1; }
+      100% { opacity: 0.3; }
+    }
+
+    .header {
+      text-align: center;
+      margin: 50px 0 50px 0;
+      font-size: 24px;
+      font-weight: bold;
+      color: #facc15;
+      z-index: 3;
+      position: relative;
+    }
+
+    .progress-container {
+      width: 30%;
+      height: 8px;
+      background: #666;
+      border-radius: 5px;
+      margin: 10px auto 30px;
+      overflow: hidden;
+      margin-top: 80px;
+    }
+
+    .progress-bar {
+      height: 100%;
+      background: #FFD700;
+      width: 0%;
+      border-radius: 15px;
+      transition: width 0.5s ease;
+    }
+
+    .quiz-wrapper {
+      position: relative;
+      max-width: 400px;
+      margin: 0 auto;
+      border: 2px solid #fff;
+      border-radius: 10px;
+      padding: 20px;
+      background: rgba(255, 255, 255, 0.1);
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+      margin-top: 100px;
+    }
+
+    .character-icon {
+      width: 100px;
+      height: 100px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: absolute;
+      top: -50px;
+      left: 50%;
+      transform: translateX(-50%);
+      border: 4px solid #fff;
+      background: #000;
+    }
+
+    .character-icon img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      border-radius: 50%;
+    }
+
+    .quiz-container {
+      background: #1e1e4e;
+      padding: 40px 20px;
+      border-radius: 20px;
+      text-align: center;
+      box-shadow: 0 0 30px rgba(0, 0, 0, 0.6);
+      overflow-y: auto;
+      max-height: 500px;
+    }
+
+    .quiz-container h3 {
+      font-size: 18px;
+      margin-bottom: 15px;
+      color: #fff;
+    }
+
+    .option-btn {
+      display: block;
+      width: 100%;
+      padding: 14px;
+      margin: 10px 0;
+      background: #2d2d6a;
+      color: white;
+      border: 3px solid transparent;
+      border-radius: 10px;
+      font-size: 16px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .option-btn:hover {
+      background: #3d3d7a;
+      transform: scale(1.02);
+    }
+
+    .correct {
+      border-color: #22c55e !important;
+    }
+
+    .wrong {
+      border-color: #ef4444 !important;
+      animation: shake 0.4s;
+    }
+
+    @keyframes shake {
+      0%, 100% { transform: translateX(0); }
+      25% { transform: translateX(-5px); }
+      50% { transform: translateX(5px); }
+      75% { transform: translateX(-5px); }
+    }
+
+    #feedback {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      animation: fadeIn 0.8s ease forwards;
+    }
+
+    @keyframes fadeIn {
+      from {opacity: 0;}
+      to {opacity: 1;}
+    }
+
+    .feedback {
+      font-size: 20px;
+      margin-bottom: 10px;
+      color: #facc15;
+    }
+
+    #correct-answer {
+      color: white;
+      font-size: 16px;
+      margin-bottom: 20px;
+    }
+
+    #feedback-img {
+      width: 100%;
+      max-width: 300px;
+      height: auto;
+      border-radius: 10px;
+      border: 2px solid white;
+      margin-top: 10px;
+      object-fit: cover;
+    }
+
+    .next-btn {
+      margin-top: 20px;
+      background: #10b981;
+      color: white;
+      border: none;
+      padding: 12px 25px;
+      border-radius: 10px;
+      font-size: 16px;
+      cursor: pointer;
+      display: none;
+    }
+  </style>
+</head>
+
+<body>
+
+<div class="dotted-background" id="dotted-background"></div>
+
+<div class="header" id="header-question-no">Question 1/10</div>
+
+<div class="progress-container">
+  <div class="progress-bar" id="progress-bar"></div>
+</div>
+
+<div class="quiz-wrapper">
+  <div class="character-icon">
+    <img src="https://cdn-icons-png.flaticon.com/512/921/921347.png" alt="Character">
+  </div>
+
+  <div class="quiz-container" id="quiz-box">
+    <div id="question-content">
+      <h3 id="question"></h3>
+      <div id="options"></div>
+    </div>
+    <div id="feedback" style="display:none;">
+      <div class="feedback" id="feedback-text"></div>
+      <div id="correct-answer"></div>
+      <img id="feedback-img" src="" alt="Feedback">
+    </div>
+    <button class="next-btn" id="next-btn" onclick="nextQuestion()">Next</button>
+  </div>
+</div>
+
+<script>
+  const container = document.getElementById('dotted-background');
+  const numDots = 80;
+  for (let i = 0; i < numDots; i++) {
+    const dot = document.createElement('div');
+    dot.classList.add('dot');
+    dot.style.top = Math.random() * 100 + '%';
+    dot.style.left = Math.random() * 100 + '%';
+    dot.style.animationDuration = (8 + Math.random() * 4) + 's';
+    container.appendChild(dot);
+  }
+
+  const questions = [
+  {question: "What was Joey’s imaginary childhood friend’s name?", options: ["Maurice", "Tony", "Frankie", "Benny"], answer: "Maurice", feedbackImage: "jq1.jpeg"},
+  {question: "What award did Joey win for his role in *Days of Our Lives*?", options: ["Emmy", "Soapy", "Soap Opera Digest Award for Best Death Scene", "Golden Screen Award"], answer: "Soap Opera Digest Award for Best Death Scene", feedbackImage: "jq2.jpeg"},
+  {question: "Which language does Joey try to learn for an audition but completely fails at?", options: ["Spanish", "German", "Italian", "French"], answer: "French", feedbackImage: "jq3.jpeg"},
+  {question: "What kind of soap opera is *Days of Our Lives*?", options: ["Medical", "Crime", "Comedy", "Sci-Fi"], answer: "Medical", feedbackImage: "jq4.jpeg"},
+  {question: "What is one of the fake skills Joey lists on his résumé?", options: ["Cooking", "Dancing", "Driving a taxi", "Painting"], answer: "Dancing", feedbackImage: "jq5.jpeg"},
+  {question: "What is the name of Joey’s sister who appears on the show?", options: ["Gina", "Tina", "Mary Angela", "Adriana"], answer: "Mary Angela", feedbackImage: "jq6.png"},
+  {question: "What game show does Joey audition to host?", options: ["Jeopardy", "Bamboozled!", "Pyramid", "Family Feud"], answer: "Bamboozled!", feedbackImage: "jq7.jpeg"},
+  {question: "What is the name of the toy penguin Joey loves?", options: ["Waddles", "Hugsy", "Flipper", "Icey"], answer: "Hugsy", feedbackImage: "jq8.jpeg"},
+  {question: "What does Joey name his recliner?", options: ["Rosita", "Tina", "Louisa", "Bella"], answer: "Rosita", feedbackImage: "jq9.jpeg"},
+  {question: "What is the character name Joey plays in *Days of Our Lives*?", options: ["Dr. Nick Rivera", "Dr. Mark Greene", "Dr. Drake Ramoray", "Dr. Mike Smith"], answer: "Dr. Drake Ramoray", feedbackImage: "jq10.jpeg"}
+];
+
+
+
+
+
+  let currentQuestion = 0;
+  let score = 0;
+  let allowNext = false;
+
+  function showQuestion() {
+    allowNext = false;
+    const questionData = questions[currentQuestion];
+    document.getElementById('header-question-no').innerText = `Question ${currentQuestion + 1}/${questions.length}`;
+    document.getElementById('question').innerText = questionData.question;
+    const optionsDiv = document.getElementById('options');
+    optionsDiv.innerHTML = '';
+    document.getElementById('question-content').style.display = 'block';
+    document.getElementById('feedback').style.display = 'none';
+    document.getElementById('next-btn').style.display = 'none';
+    questionData.options.forEach(option => {
+      const btn = document.createElement('button');
+      btn.classList.add('option-btn');
+      btn.innerText = option;
+      btn.onclick = () => selectAnswer(btn, questionData.answer, questionData.feedbackImage);
+      optionsDiv.appendChild(btn);
+    });
+    updateProgressBar();
+  }
+
+  function selectAnswer(button, correctAnswer, feedbackImage) {
+    if (allowNext) return;
+    allowNext = true;
+    const buttons = document.querySelectorAll('.option-btn');
+    buttons.forEach(btn => btn.disabled = true);
+    if (button.innerText === correctAnswer) {
+      button.classList.add('correct');
+      showFeedback(true, correctAnswer, feedbackImage);
+      score++;
+    } else {
+      button.classList.add('wrong');
+      buttons.forEach(btn => {
+        if (btn.innerText === correctAnswer) {
+          btn.classList.add('correct');
+        }
+      });
+      showFeedback(false, correctAnswer, feedbackImage);
+    }
+  }
+
+  function showFeedback(isCorrect, correctAnswer, feedbackImage) {
+    document.getElementById('question-content').style.display = 'none';
+    document.getElementById('feedback').style.display = 'block';
+    document.getElementById('feedback-text').innerText = isCorrect ? "✔️ Correct!" : "❌ Wrong!";
+    document.getElementById('correct-answer').innerText = `Correct Answer: ${correctAnswer}`;
+    document.getElementById('feedback-img').src = feedbackImage; 
+    document.getElementById('next-btn').style.display = 'inline-block';
+  }
+
+  function nextQuestion() {
+    currentQuestion++;
+    if (currentQuestion < questions.length) {
+      showQuestion();
+    } else {
+      showScore();
+    }
+  }
+
+  function showScore() {
+    let videoSrc = '';
+
+    if (score >= 1 && score <= 3) {
+      videoSrc = 'j3.mp4'; 
+    } else if (score >= 4 && score <= 7) {
+      videoSrc = 'j2.mp4'; 
+    } else if (score >= 8 && score <= 12) {
+      videoSrc = 'j1.mp4';
+    }
+
+    document.getElementById('quiz-box').innerHTML = `
+      <h2 style="color:#facc15; margin-bottom: 20px;">🎉 You scored ${score}/${questions.length} 🎉</h2>
+      <video id="final-video" controls autoplay muted loop style="width:100%; max-width:300px; border:2px solid white; border-radius:10px; background:black; margin: 0 auto; display: block;">
+        <source src="${videoSrc}" type="video/mp4">
+        Your browser does not support the video tag.
+      </video>
+	  <div style="text-align:center; margin-top: 20px;">
+      <button onclick="location.href='challenges.html'" style="padding: 12px 20px; background:#8b5cf6; color: white; border: none; border-radius: 8px; font-size: 16px; margin: 10px;">🎯 Pick the Challenge</button>
+      <button onclick="location.href='index.html'" style="padding: 12px 20px; background:#ec4899; color: white; border: none; border-radius: 8px; font-size: 16px; margin: 10px;">🏠 Home</button>
+    </div>
+    `;
+  }
+
+  function updateProgressBar() {
+    const progress = (currentQuestion / questions.length) * 100;
+    document.getElementById('progress-bar').style.width = `${progress}%`;
+  }
+
+  window.onload = showQuestion;
+</script>
+
+</body>
+</html>
