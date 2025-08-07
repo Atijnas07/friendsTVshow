@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Friends Quiz Central</title>
+  <link rel="shortcut icon" href="logo.jpeg" type="image/jpeg">
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet" />
+  <style>
+    body {
+      background: linear-gradient(to bottom right, #1a0d2e, #2e1a47, #3b2357);
+      font-family: 'Comic Sans MS', cursive, sans-serif;
+      overflow-x: hidden;
+    }
+    .friends-logo {
+      font-size: 3rem;
+      font-weight: bold;
+      letter-spacing: 8px;
+      color: white;
+    }
+    .dot {
+      height: 8px;
+      width: 8px;
+      background-color: #ffcc00;
+      border-radius: 50%;
+      display: inline-block;
+      margin: 0 4px;
+    }
+    .card {
+      background: white;
+      padding: 1rem;
+      border-radius: 1rem;
+      text-align: center;
+      transition: transform 0.5s, box-shadow 0.5s, background 0.5s;
+      opacity: 0;
+      transform: translateY(50px);
+      color: black;
+      position: relative;
+      animation: cardFlash 6s infinite alternate;
+      box-shadow: 0 0 10px rgba(255, 255, 255, 0.2);
+    }
+    .card:hover {
+      transform: scale(1.05);
+      box-shadow: 0 0 25px rgba(255, 255, 255, 0.8), 0 0 40px rgba(255, 220, 100, 0.8);
+      background: linear-gradient(to bottom right, #ffe680, #ffffff);
+    }
+    @keyframes cardFlash {
+      0% { box-shadow: 0 0 5px rgba(255,255,255,0.1), 0 0 10px rgba(255,255,255,0.1); }
+      50% { box-shadow: 0 0 20px rgba(255,255,255,0.4), 0 0 30px rgba(255,220,100,0.5); }
+      100% { box-shadow: 0 0 5px rgba(255,255,255,0.1), 0 0 10px rgba(255,255,255,0.1); }
+    }
+    .sofa {
+      width: 500px;
+      animation: bounce 4s infinite ease-in-out;
+    }
+    @keyframes bounce {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-10px); }
+    }
+    .loader {
+      border: 4px solid #f3f3f3;
+      border-top: 4px solid #ffcc00;
+      border-radius: 50%;
+      width: 40px;
+      height: 40px;
+      animation: spin 1s linear infinite;
+      display: none;
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      z-index: 1000;
+    }
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+    .card.show {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    /* Sidebar Info Box */
+    
+  .floating-buttons {
+    position: fixed;
+    top: 10px; /* Moved up */
+    right: 30px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    z-index: 1000;
+  }
+
+  .character-button {
+    background-color: #ffcc00;
+    color: #1a0d2e;
+    padding: 10px 20px;
+    font-weight: bold;
+    border-radius: 12px;
+    font-size: 1rem;
+    transition: background 0.3s;
+  }
+  .character-button:hover {
+    background-color: #ffd633;
+  }
+
+  .info-container {
+    position: relative;
+  }
+
+  .info-button {
+    background: #ffcc00;
+    color: #1a0d2e;
+    font-weight: bold;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    font-size: 1.2rem;
+    text-align: center;
+    cursor: pointer;
+    transition: background 0.3s;
+  }
+  .info-button:hover {
+    background: #ffd633;
+  }
+
+  .info-message {
+    position: absolute;
+    top: 50px;
+    right: 0;
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    padding: 15px;
+    width: 220px;
+    border-radius: 15px;
+    text-align: center;
+    box-shadow: 0 0 15px rgba(255, 255, 255, 0.2);
+    color: #ffe680;
+  }
+  
+  .info-message h3 {
+    font-size: 1.1rem;
+    margin-bottom: 5px;
+  }
+  
+  .info-message p {
+    font-size: 0.9rem;
+    color: #ddd;
+  }
+
+  .hidden {
+    display: none;
+  }
+
+  /* Show info message when hovering on info-container */
+  .info-container:hover .info-message {
+    display: block;
+  }
+
+  </style>
+</head>
+
+<body class="flex flex-col items-center min-h-screen text-gray-200 p-6">
+
+  <!-- Loader -->
+  <div id="loader" class="loader"></div>
+
+  <!-- Sidebar Info Box -->
+  <div class="floating-buttons">
+  <button onclick="location.href='characters.html'" class="character-button">
+    Characters
+</button>
+
+  <div class="info-container">
+    <button class="info-button">i</button>
+    <div class="info-message hidden">
+      <h3>New Quiz Alert!</h3>
+      <p>After every two weeks we bring a new quiz!</p>
+    </div>
+  </div>
+</div>
+
+
+  <!-- FRIENDS Logo Title -->
+  <header class="text-center mb-10">
+    <h1 class="friends-logo mb-4">
+      F<span class="dot" style="background-color:red;"></span>R<span class="dot" style="background-color:blue;"></span>I<span class="dot" style="background-color:yellow;"></span>E<span class="dot" style="background-color:red;"></span>N<span class="dot" style="background-color:blue;"></span>D<span class="dot" style="background-color:yellow;"></span>S
+    </h1>
+    <h2 class="text-3xl font-bold mb-2">The Ultimate Friends Quiz Adventure!</h2>
+    <p class="text-lg text-gray-300 italic">"Could you *BE* any more ready?"</p>
+  </header>
+
+  <!-- Light and Sofa Section -->
+  <div class="flex flex-col items-center mb-10 relative">
+    <img src="bg.png" alt="Central Perk Sofa" class="sofa" />
+  </div>
+
+  <!-- Start Quiz Button -->
+  <button onclick="location.href='challenges.html'" class="bg-yellow-400 hover:bg-yellow-500 text-gray-900 font-bold py-4 px-8 rounded-2xl text-xl mb-10 transition duration-300 animate-bounce">
+    Start the Game 🎉
+  </button>
+
+
+  <footer class="mt-10 text-gray-400 text-sm text-center">
+    &copy; 2025 Friends Quiz Central. I'll be there for you 🎶
+  </footer>
+
+  <audio id="clickSound" src="https://cdn.pixabay.com/audio/2022/03/15/audio_731e6d3942.mp3"></audio>
+
+  <script>
+    function startGame() {
+      const loader = document.getElementById('loader');
+      const clickSound = document.getElementById('clickSound');
+
+      clickSound.play();
+      loader.style.display = 'block';
+
+      setTimeout(() => {
+        document.getElementById('challenges').classList.remove('hidden'); // Reveal challenges section
+        document.getElementById('challenges').scrollIntoView({ behavior: 'smooth' });
+        loader.style.display = 'none';
+      }, 1000);
+    }
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('show');
+        }
+      });
+    }, { threshold: 0.1 });
+
+    document.querySelectorAll('.card').forEach(card => {
+      observer.observe(card);
+    });
+  </script>
+
+</body>
+</html>
